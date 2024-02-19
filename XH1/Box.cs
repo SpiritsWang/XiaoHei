@@ -1,4 +1,6 @@
-﻿using System;
+﻿using log4net;
+using log4net.Core;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 using XH1.Util;
 
 namespace XH1
@@ -20,9 +23,11 @@ namespace XH1
             Properties.Resources.XH1,
             Properties.Resources.XH2
     };
-        private Boolean IsMouseDown = false;
+        private bool IsMouseDown = false;
         private Point MousePoint;
-        private Boolean hide = false;
+        private bool hide = false;
+        Process appProcess = null;
+
         public Box()
         {
             Rectangle rect = Screen.GetWorkingArea(this);
@@ -41,38 +46,30 @@ namespace XH1
 
         private void wordToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Process wordProcess = new Process();
+            appProcess = new Process();
 
-            wordProcess.StartInfo.FileName = ConfigHelper.GetConfiguaration("WordAddress")/*"C:\\Program Files\\Microsoft Office\\root\\Office16\\WINWORD.EXE"*/;
+            appProcess.StartInfo.FileName = ConfigHelper.GetConfiguaration("WordAddress")/*"C:\\Program Files\\Microsoft Office\\root\\Office16\\WINWORD.EXE"*/;
 
-            wordProcess.Start();
+            appProcess.Start();
         }
 
         private void myPCToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Process myPCProcess = new Process();
+            appProcess = new Process();
 
-            myPCProcess.StartInfo.FileName = "Explorer.exe";
+            appProcess.StartInfo.FileName = "Explorer.exe";
 
-            myPCProcess.Start();
+            appProcess.Start();
         }
 
         private void weChatToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Process weChatProcess = new Process();
-
-            weChatProcess.StartInfo.FileName = ConfigHelper.GetConfiguaration("WeChatAddress");/*"C:\\Program Files (x86)\\Tencent\\WeChat\\WeChat.exe"*/;
-
-            weChatProcess.Start();
+            StartEXE("WeChatAddress");
         }
 
         private void qyWeChatToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Process qyWeChatProcess = new Process();
-
-            qyWeChatProcess.StartInfo.FileName = ConfigHelper.GetConfiguaration("WXWorkAddress"); /*"C:\\Program Files (x86)\\WXWork\\WXWork.exe"*/;
-
-            qyWeChatProcess.Start();
+            StartEXE("WXWorkAddress");
         }
 
         private void Box_MouseMove(object sender, MouseEventArgs e)
@@ -105,7 +102,7 @@ namespace XH1
         {
             NotifyIcon notifyIcon = new NotifyIcon();
 
-            notifyIcon.Icon = new Icon(@"D:\\Personal\\XiaoHei\\XH1\Resource\\image\\backimg1.ico");
+            notifyIcon.Icon = new Icon(@"D:\\Personal\\Pet\\XH1\Resource\\image\\backimg1.ico");
 
             notifyIcon.Text = "系统托盘";
 
@@ -141,6 +138,30 @@ namespace XH1
         private void button1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void steamToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            StartEXE("SteamAddress");
+        }
+
+        private bool StartEXE(string exeName)
+        {
+            try
+            {
+                appProcess = new Process();
+
+                appProcess.StartInfo.FileName = ConfigHelper.GetConfiguaration(exeName);/*"C:\\Program Files (x86)\\Tencent\\WeChat\\WeChat.exe"*/;
+
+                appProcess.Start();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show($"{exeName}路径无效，请检查软件是否安装或路径是否维护正确！");
+                return false;
+            }
+            return true;
         }
     }
 }
