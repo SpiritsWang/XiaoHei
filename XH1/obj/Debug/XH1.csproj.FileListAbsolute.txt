@@ -1,0 +1,10 @@
+D:\Personal\XiaoHei\XH1\bin\Debug\XH1.exe.config
+D:\Personal\XiaoHei\XH1\bin\Debug\XH1.exe
+D:\Personal\XiaoHei\XH1\bin\Debug\XH1.pdb
+D:\Personal\XiaoHei\XH1\obj\Debug\XH1.csproj.AssemblyReference.cache
+D:\Personal\XiaoHei\XH1\obj\Debug\XH1.Box.resources
+D:\Personal\XiaoHei\XH1\obj\Debug\XH1.Properties.Resources.resources
+D:\Personal\XiaoHei\XH1\obj\Debug\XH1.csproj.GenerateResource.cache
+D:\Personal\XiaoHei\XH1\obj\Debug\XH1.csproj.CoreCompileInputs.cache
+D:\Personal\XiaoHei\XH1\obj\Debug\XH1.exe
+D:\Personal\XiaoHei\XH1\obj\Debug\XH1.pdb
