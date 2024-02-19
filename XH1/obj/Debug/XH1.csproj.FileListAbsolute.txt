@@ -8,3 +8,7 @@ D:\Personal\XiaoHei\XH1\obj\Debug\XH1.csproj.GenerateResource.cache
 D:\Personal\XiaoHei\XH1\obj\Debug\XH1.csproj.CoreCompileInputs.cache
 D:\Personal\XiaoHei\XH1\obj\Debug\XH1.exe
 D:\Personal\XiaoHei\XH1\obj\Debug\XH1.pdb
+D:\Personal\XiaoHei\XH1\bin\Debug\System.Configuration.ConfigurationManager.dll
+D:\Personal\XiaoHei\XH1\bin\Debug\System.Configuration.ConfigurationManager.xml
+D:\Personal\XiaoHei\XH1\obj\Debug\XH1.csproj.CopyComplete
+D:\Personal\XiaoHei\XH1\bin\Debug\Config\AppSettings.config
