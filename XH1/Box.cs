@@ -2,16 +2,22 @@
 using log4net.Core;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.UI.WebControls;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using XH1.Dialog;
+using XH1.Entity;
+using XH1.Properties;
 using XH1.Util;
 
 namespace XH1
@@ -28,6 +34,8 @@ namespace XH1
         private Point MousePoint;
         private bool hide = false;
         Process appProcess = null;
+        private NameValueCollection AllSettings;
+        private List<AppAddressInfo> AddressList = null;
 
         public Box()
         {
@@ -39,38 +47,16 @@ namespace XH1
             InitializeComponent();
         }
 
+        private void Box_Load(object sender, EventArgs e)
+        {
+            InitBackIcon();
+            InitToolStripMenuItem();
+        }
+
         private void timer1_Tick(object sender, EventArgs e)
         {
             int random = new Random().Next(0, 2);
-            pictureBox1.Image = (Image)Properties.Resources.ResourceManager.GetObject($"XH{random}");
-        }
-
-        private void wordToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            appProcess = new Process();
-
-            appProcess.StartInfo.FileName = ConfigHelper.GetConfiguaration("WordAddress")/*"C:\\Program Files\\Microsoft Office\\root\\Office16\\WINWORD.EXE"*/;
-
-            appProcess.Start();
-        }
-
-        private void myPCToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            appProcess = new Process();
-
-            appProcess.StartInfo.FileName = "Explorer.exe";
-
-            appProcess.Start();
-        }
-
-        private void weChatToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            StartEXE("WeChatAddress");
-        }
-
-        private void qyWeChatToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            StartEXE("WXWorkAddress");
+            pictureBox1.Image = (System.Drawing.Image)Properties.Resources.ResourceManager.GetObject($"XH{random}");
         }
 
         private void Box_MouseMove(object sender, MouseEventArgs e)
@@ -94,12 +80,7 @@ namespace XH1
             IsMouseDown = false;
         }
 
-        private void cancelToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            System.Environment.Exit(0);
-        }
-
-        private void Box_Load(object sender, EventArgs e)
+        private void InitBackIcon()
         {
             NotifyIcon notifyIcon = new NotifyIcon();
             string currentPath = Directory.GetCurrentDirectory();
@@ -112,7 +93,6 @@ namespace XH1
             notifyIcon.ContextMenuStrip = contextMenuStrip1;
 
             //显示托盘
-
             notifyIcon.Visible = true;
         }
 
@@ -128,41 +108,138 @@ namespace XH1
             this.Activate();
             this.Show();
         }
-
+        /// <summary>
+        /// 退出
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cancelToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            System.Environment.Exit(0);
+        }
+        /// <summary>
+        /// 后台
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void backWorkToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.ShowInTaskbar = false;
             this.backWorkToolStripMenuItem.Enabled = false;
             this.Hide();
         }
-
-        private void button1_Click(object sender, EventArgs e)
+        /// <summary>
+        /// 设置
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnSetting_Click(object sender, EventArgs e)
         {
+            Setting dlgSetting = new Setting(AddressList);
 
+            if (dlgSetting.ShowDialog() == DialogResult.OK)
+            {
+
+            }
         }
 
-        private void steamToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            StartEXE("SteamAddress");
-        }
-
-        private bool StartEXE(string exeName)
+        private bool StartEXE(string name, string address)
         {
             try
             {
                 appProcess = new Process();
 
-                appProcess.StartInfo.FileName = ConfigHelper.GetConfiguaration(exeName);/*"C:\\Program Files (x86)\\Tencent\\WeChat\\WeChat.exe"*/;
+                appProcess.StartInfo.FileName = address;/*"C:\\Program Files (x86)\\Tencent\\WeChat\\WeChat.exe"*/;
 
                 appProcess.Start();
             }
             catch (Exception ex)
             {
 
-                MessageBox.Show($"{exeName}路径无效，请检查软件是否安装或路径是否维护正确！");
+                MessageBox.Show($"{name}配置路径{address}无效，请检查软件是否安装或路径是否维护正确！");
                 return false;
             }
             return true;
+        }
+        /// <summary>
+        /// 初始化右键菜单内容
+        /// </summary>
+        private void InitToolStripMenuItem()
+        {
+            AddressList = new List<AppAddressInfo>();
+            //取所有的setting
+            AllSettings = ConfigHelper.GetAllSetting();
+            var keys = AllSettings.Keys;
+            foreach (var key in keys)
+            {
+                //取到单个VALUE
+                var setting = AllSettings[key.ToString()];
+
+                var address = new AppAddressInfo();
+
+                var addressInfoArray = key.ToString().Split('-');
+
+                if (addressInfoArray.Length >= 2)
+                {
+                    address.DisplayName = addressInfoArray[0];
+                    address.IDName = addressInfoArray[1];
+
+                    if (addressInfoArray.Length == 3)
+                        address.Index = addressInfoArray[2];
+                    else if (addressInfoArray.Length == 4)
+                        address.Visible = addressInfoArray[3];
+                }
+                else
+                {
+                    MessageBox.Show("配置文件错误，请联系管理员。");
+                    return;
+                }
+
+                address.Key = key.ToString();
+                address.Value = setting;
+
+                if (string.IsNullOrEmpty(address.Index))
+                    address.Index = "0";
+                if (string.IsNullOrEmpty(address.Visible))
+                    address.Visible = "1";
+
+                AddressList.Add(address);
+            }
+            InitContextMenuStrip(AddressList);
+        }
+        /// <summary>
+        /// 初始化右键菜单顺序
+        /// </summary>
+        /// <param name="appAddresseList"></param>
+        private void InitContextMenuStrip(List<AppAddressInfo> appAddresseList)
+        {
+            AddressList = appAddresseList.OrderBy(x => int.Parse(x.Index)).ToList();
+
+            ToolStripMenuItem menuItem = null;
+
+            foreach (var addressInfo in AddressList)
+            {
+                menuItem = new ToolStripMenuItem();
+                menuItem.Text = addressInfo.DisplayName;
+                menuItem.Name = addressInfo.IDName;
+                menuItem.Tag = addressInfo.Value;
+                menuItem.Click += ClickEvent;
+                this.contextMenuStrip1.Items.Add(menuItem);
+            }
+
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.backWorkToolStripMenuItem,
+            this.cancelToolStripMenuItem});
+
+        }
+
+        private void ClickEvent(object sender, EventArgs e)
+        {
+            ToolStripMenuItem item = sender as ToolStripMenuItem;
+            if (item.Name.Contains("Address"))
+            {
+                StartEXE(item.Text, item.Tag.ToString());
+            }
         }
     }
 }
