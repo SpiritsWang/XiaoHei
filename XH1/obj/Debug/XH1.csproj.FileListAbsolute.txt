@@ -45,3 +45,7 @@ D:\VSProject\Pet\XiaoHei\XH1\obj\Debug\XH1.csproj.CoreCompileInputs.cache
 D:\VSProject\Pet\XiaoHei\XH1\obj\Debug\XH1.csproj.CopyComplete
 D:\VSProject\Pet\XiaoHei\XH1\obj\Debug\XH1.exe
 D:\VSProject\Pet\XiaoHei\XH1\obj\Debug\XH1.pdb
+D:\Personal\Pet\XH1\bin\Debug\Resource\image\backimg1.ico
+D:\Personal\Pet\XH1\bin\Debug\Resource\gif\XH2.gif
+D:\Personal\Pet\XH1\bin\Debug\Resource\gif\XH1.gif
+D:\Personal\Pet\XH1\bin\Debug\Resource\gif\XH0.gif
