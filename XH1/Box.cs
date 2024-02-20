@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -101,8 +102,8 @@ namespace XH1
         private void Box_Load(object sender, EventArgs e)
         {
             NotifyIcon notifyIcon = new NotifyIcon();
-
-            notifyIcon.Icon = new Icon(@"D:\\Personal\\Pet\\XH1\Resource\\image\\backimg1.ico");
+            string currentPath = Directory.GetCurrentDirectory();
+            notifyIcon.Icon = new Icon($@"{currentPath}\\Resource\\image\\backimg1.ico");
 
             notifyIcon.Text = "系统托盘";
 
