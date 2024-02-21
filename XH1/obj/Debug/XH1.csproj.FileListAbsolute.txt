@@ -58,3 +58,4 @@ D:\Personal\Pet\XH1\bin\Debug\TelerikCommon.dll
 D:\Personal\Pet\XH1\bin\Debug\Telerik.WinControls.xml
 D:\Personal\Pet\XH1\bin\Debug\Telerik.WinControls.UI.xml
 D:\Personal\Pet\XH1\obj\Debug\XH1.Dialog.DlgAddressInfo.resources
+D:\Personal\Pet\XH1\bin\Debug\Resource\image\set.ico

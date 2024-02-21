@@ -24,12 +24,6 @@ namespace XH1
 {
     public partial class Box : Form
     {
-        public Bitmap[] Resource =
-        {
-            Properties.Resources.XH0,
-            Properties.Resources.XH1,
-            Properties.Resources.XH2
-    };
         private bool IsMouseDown = false;
         private Point MousePoint;
         private bool hide = false;
@@ -49,13 +43,14 @@ namespace XH1
 
         private void Box_Load(object sender, EventArgs e)
         {
+            this.TopMost = true;
             InitBackIcon();
             InitToolStripMenuItem();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            int random = new Random().Next(0, 2);
+            int random = new Random().Next(0, 8);
             pictureBox1.Image = (System.Drawing.Image)Properties.Resources.ResourceManager.GetObject($"XH{random}");
         }
 
@@ -80,6 +75,27 @@ namespace XH1
             IsMouseDown = false;
         }
 
+        private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (IsMouseDown)
+            {
+                Point snap = Cursor.Position;
+                this.Location = new Point(Location.X + (snap.X - MousePoint.X), Location.Y + (snap.Y - MousePoint.Y));
+                MousePoint = Cursor.Position;
+            }
+        }
+
+        private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
+        {
+            IsMouseDown = false;
+        }
+
+        private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
+        {
+            IsMouseDown = true;
+            MousePoint = Cursor.Position;
+        }
+
         private void InitBackIcon()
         {
             NotifyIcon notifyIcon = new NotifyIcon();
@@ -98,15 +114,45 @@ namespace XH1
 
         private void notifyIcon_DoubleClick(object sender, EventArgs e)
         {
-
+            this.Visible = true;
             this.WindowState = FormWindowState.Normal;
 
-            this.ShowInTaskbar = true;
+            this.ShowInTaskbar = false;
 
             this.backWorkToolStripMenuItem.Enabled = true;
 
             this.Activate();
             this.Show();
+        }
+        /// <summary>
+        /// 设置
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void settingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Setting dlgSetting = new Setting(AddressList);
+
+            if (dlgSetting.ShowDialog() == DialogResult.OK)
+            {
+                Dictionary<string, string> needUpdateAddresInfoDic = new Dictionary<string, string>();
+                AddressList = dlgSetting.AllAddressList;
+                foreach (var address in AddressList)
+                {
+                    needUpdateAddresInfoDic.Add($"{address.DisplayName}-{address.IDName}-{address.Index}-{address.Visible}", address.Value);
+                }
+                if (ConfigHelper.BatchAddUpdateAppAddressSettings(needUpdateAddresInfoDic))
+                {
+                    if (MessageBox.Show("设置成功,重启应用后生效,是否现在重启？", "提示",
+                        MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+                    {
+                        Process.Start(Application.StartupPath + "\\XH1.exe");
+                        Process.GetCurrentProcess().Kill();
+                    }
+                }
+                else
+                    MessageBox.Show("失败！请联系管理员。");
+            }
         }
         /// <summary>
         /// 退出
@@ -127,20 +173,6 @@ namespace XH1
             this.ShowInTaskbar = false;
             this.backWorkToolStripMenuItem.Enabled = false;
             this.Hide();
-        }
-        /// <summary>
-        /// 设置
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnSetting_Click(object sender, EventArgs e)
-        {
-            Setting dlgSetting = new Setting(AddressList);
-
-            if (dlgSetting.ShowDialog() == DialogResult.OK)
-            {
-
-            }
         }
 
         private bool StartEXE(string name, string address)
@@ -166,6 +198,7 @@ namespace XH1
         /// </summary>
         private void InitToolStripMenuItem()
         {
+            this.contextMenuStrip1.Items.Clear();
             AddressList = new List<AppAddressInfo>();
             //取所有的setting
             AllSettings = ConfigHelper.GetAllSetting();
@@ -216,8 +249,7 @@ namespace XH1
             AddressList = appAddresseList.OrderBy(x => int.Parse(x.Index)).ToList();
 
             ToolStripMenuItem menuItem = null;
-
-            foreach (var addressInfo in AddressList)
+            foreach (var addressInfo in AddressList.Where(x => x.Visible == "1").ToList())
             {
                 menuItem = new ToolStripMenuItem();
                 menuItem.Text = addressInfo.DisplayName;
@@ -226,8 +258,7 @@ namespace XH1
                 menuItem.Click += ClickEvent;
                 this.contextMenuStrip1.Items.Add(menuItem);
             }
-
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {this.settingToolStripMenuItem,
             this.backWorkToolStripMenuItem,
             this.cancelToolStripMenuItem});
 

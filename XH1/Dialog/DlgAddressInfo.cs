@@ -36,6 +36,7 @@ namespace XH1.Dialog
             {
                 this.Text = "编辑";
                 txtDisplayName.Text = _AddressInfo.DisplayName;
+                txtDisplayName.ReadOnly = true;
                 txtAddress.Text = _AddressInfo.Value;
                 radVisible.Checked = _AddressInfo.Visible == "1" ? true : false;
             }
@@ -50,7 +51,7 @@ namespace XH1.Dialog
             if (_AddressInfo == null)
             {
                 _AddressInfo = new AppAddressInfo();
-                _AddressInfo.IDName = Guid.NewGuid().ToString() + "Address";
+                _AddressInfo.IDName = Guid.NewGuid().ToString("N") + "Address";
                 _AddressInfo.Index = "0";
             }
             _AddressInfo.DisplayName = txtDisplayName.Text;

@@ -45,28 +45,25 @@ namespace XH1.Util
             }
             return true;
         }
-        public static bool BatchAddUpdateAppSettings(Dictionary<string, string> settingsDic)
+        public static bool BatchAddUpdateAppAddressSettings(Dictionary<string, string> settingsDic)
         {
             try
             {
                 var configFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
                 var settings = configFile.AppSettings.Settings;
 
-                foreach(var item in settingsDic)
+                foreach (var item in settingsDic)
                 {
-                    var key = item.Key;
+                    var idAddress = item.Key.Split('-')[1];
                     var value = item.Value;
+                    var key = settings.AllKeys.FirstOrDefault(x => x.Contains(idAddress));
 
-                    if (settings[key] == null)
+                    if (settings[key] != null)
                     {
-                        settings.Add(key, value);
+                        settings.Remove(key);
                     }
-                    else
-                    {
-                        settings[key].Value = value;
-                    }
+                    settings.Add(item.Key, value);
                 }
-
                 configFile.Save(ConfigurationSaveMode.Modified);
                 ConfigurationManager.RefreshSection(configFile.AppSettings.SectionInformation.Name);
             }
