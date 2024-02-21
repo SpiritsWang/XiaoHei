@@ -35,7 +35,7 @@ namespace XH1
         {
             Rectangle rect = Screen.GetWorkingArea(this);
             Point p = new Point(rect.Width, rect.Height);
-            this.Location = new Point(p.X - this.Size.Width - rect.Width / 20, p.Y - this.Size.Height - rect.Height / 15);
+            this.Location = new Point(p.X - this.Size.Width/* - rect.Width / 20*/, p.Y - this.Size.Height/* - rect.Height / 20*/);
             this.WindowState = FormWindowState.Minimized;
             this.ShowInTaskbar = false;
             InitializeComponent();
@@ -50,7 +50,7 @@ namespace XH1
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            int random = new Random().Next(0, 8);
+            int random = new Random().Next(0, 10);
             pictureBox1.Image = (System.Drawing.Image)Properties.Resources.ResourceManager.GetObject($"XH{random}");
         }
 

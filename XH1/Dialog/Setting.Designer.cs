@@ -137,6 +137,7 @@
             this.btnUp.TabIndex = 0;
             this.btnUp.Text = "上移";
             this.btnUp.UseVisualStyleBackColor = true;
+            this.btnUp.Visible = false;
             this.btnUp.Click += new System.EventHandler(this.btnUp_Click);
             // 
             // btnDown
@@ -148,6 +149,7 @@
             this.btnDown.TabIndex = 1;
             this.btnDown.Text = "下移";
             this.btnDown.UseVisualStyleBackColor = true;
+            this.btnDown.Visible = false;
             this.btnDown.Click += new System.EventHandler(this.btnDown_Click);
             // 
             // btnAdd

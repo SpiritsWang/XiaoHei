@@ -93,6 +93,16 @@ namespace XH1.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
+        internal static System.Drawing.Bitmap XH10 {
+            get {
+                object obj = ResourceManager.GetObject("XH10", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
         internal static System.Drawing.Bitmap XH2 {
             get {
                 object obj = ResourceManager.GetObject("XH2", resourceCulture);
@@ -156,6 +166,16 @@ namespace XH1.Properties {
         internal static System.Drawing.Bitmap XH8 {
             get {
                 object obj = ResourceManager.GetObject("XH8", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap XH9 {
+            get {
+                object obj = ResourceManager.GetObject("XH9", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

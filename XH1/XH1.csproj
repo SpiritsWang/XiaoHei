@@ -32,6 +32,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>backimg1.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net, Version=2.0.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>packages\log4net.2.0.15\lib\net45\log4net.dll</HintPath>
@@ -139,6 +142,18 @@
     <None Include="Resource\gif\XH6.GIF" />
     <None Include="Resource\gif\XH7.GIF" />
     <None Include="Resource\gif\XH8.GIF" />
+    <Content Include="backimg1.ico" />
+    <None Include="Resource\gif\100\XH0.gif" />
+    <None Include="Resource\gif\100\XH1.gif" />
+    <None Include="Resource\gif\100\XH2.gif" />
+    <None Include="Resource\gif\100\XH3.GIF" />
+    <None Include="Resource\gif\100\XH4.GIF" />
+    <None Include="Resource\gif\100\XH5.GIF" />
+    <None Include="Resource\gif\100\XH6.GIF" />
+    <None Include="Resource\gif\100\XH7.GIF" />
+    <None Include="Resource\gif\100\XH8.GIF" />
+    <None Include="Resource\gif\100\XH9.GIF" />
+    <None Include="Resource\gif\100\XH10.GIF" />
     <Content Include="Resource\image\backimg1.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
