@@ -51,7 +51,6 @@ D:\Personal\Pet\XH1\bin\Debug\Resource\gif\XH1.gif
 D:\Personal\Pet\XH1\bin\Debug\Resource\gif\XH0.gif
 D:\Personal\Pet\XH1\obj\Debug\XH1.Dialog.Setting.resources
 D:\Personal\Pet\XH1\obj\Debug\XH1.exe.licenses
-D:\Personal\Pet\XH1\bin\Debug\Entity\AppAddressInfo.cs
 D:\Personal\Pet\XH1\bin\Debug\Telerik.WinControls.dll
 D:\Personal\Pet\XH1\bin\Debug\Telerik.WinControls.UI.dll
 D:\Personal\Pet\XH1\bin\Debug\TelerikCommon.dll
