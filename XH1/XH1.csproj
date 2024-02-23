@@ -87,6 +87,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Util\ConfigHelper.cs" />
+    <Compile Include="Util\ConfigManager.cs" />
     <EmbeddedResource Include="Box.resx">
       <DependentUpon>Box.cs</DependentUpon>
     </EmbeddedResource>
